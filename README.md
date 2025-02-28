@@ -1,6 +1,6 @@
 # Very short description of the package
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/zwartpet/laravel-schedule-manager.svg?style=flat-square)](https://packagist.org/packages/zwartpet/laravel-schedule-manager)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/zwartpet/laravel-schedule-manager.svg?style=flat-square)](https://packagist.org/packages/zwartpet/schedule-manager)
 [![Total Downloads](https://img.shields.io/packagist/dt/zwartpet/laravel-schedule-manager.svg?style=flat-square)](https://packagist.org/packages/zwartpet/laravel-schedule-manager)
 ![GitHub Actions](https://github.com/zwartpet/laravel-schedule-manager/actions/workflows/main.yml/badge.svg)
 
