@@ -2,8 +2,9 @@ name: Run tests
 
 on:
   push:
-  schedule:
-    - cron: '0 0 * * *'
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   php-tests:
