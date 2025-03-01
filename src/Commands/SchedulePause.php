@@ -29,7 +29,7 @@ class SchedulePause extends Command
             ]);
 
         $chosenOption = $this->choice(
-            'Which schedules do you want to pause?',
+            'Which schedule do you want to pause?',
             $schedules->pluck('command', 'key')->toArray()
         );
         $scheduleToPause = $schedules->firstWhere('command', $chosenOption);

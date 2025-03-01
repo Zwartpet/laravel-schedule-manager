@@ -1,10 +1,11 @@
 # Very short description of the package
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/zwartpet/laravel-schedule-manager.svg?style=flat-square)](https://packagist.org/packages/zwartpet/schedule-manager)
-[![Total Downloads](https://img.shields.io/packagist/dt/zwartpet/laravel-schedule-manager.svg?style=flat-square)](https://packagist.org/packages/zwartpet/laravel-schedule-manager)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/zwartpet/schedule-manager.svg?style=flat-square)](https://packagist.org/packages/zwartpet/schedule-manager)
+[![Total Downloads](https://img.shields.io/packagist/dt/zwartpet/schedule-manager.svg?style=flat-square)](https://packagist.org/packages/zwartpet/schedule-manager)
 [![Test](https://github.com/Zwartpet/laravel-schedule-manager/actions/workflows/main.yml/badge.svg)](https://github.com/Zwartpet/laravel-schedule-manager/actions/workflows/main.yml)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+Adds pause and resume functionality to the Laravel schedule via command line and an admin interface (wip).  
+Because sometimes you just quickly want to pause a specific schedule without the need to deploy the whole application
 
 ## Installation
 
@@ -16,11 +17,37 @@ composer require zwartpet/schedule-manager
 
 ## Usage
 
-```php
-// Usage description here
+### Command line
+
+Just use the `pause` and `resume` commands to pause and resume a schedule.    
+With the `--description` option you can add a description to the pause.  
+The `--pause-until` option will pause the schedule until the given date.
+```shell
+php artisan schedule:pause --description="3rd party API is down" --pause-until="2027-01-01 00:00:00"
+
+ Which schedule do you want to pause?:
+  [0] 0 0 * * * php artisan cache:clear
+ > 
 ```
 
-### Testing
+Using the `paused` command you can see all the paused schedules.
+```shell
+php artisan schedule:paused                                                                          
++-----------------------------------+---------------------+-----------------------+
+| Paused schedule                   | Paused until        | Description           |
++-----------------------------------+---------------------+-----------------------+
+| 0 0 * * * php artisan cache:clear | 2027-01-01 00:00:00 | 3rd party API is down |
++-----------------------------------+---------------------+-----------------------+
+```
+
+### Configuration
+
+This library is plug and play and works out of the box. There are some configuration options available.
+
+By default the package uses the Laravel cache to store the paused schedules.
+You can change the cache store by adding `SCHEDULE_MANAGER_CACHE_STORE` to your `.env` which defaults to the Laravel's own `CACHE_STORE`
+
+## Testing
 
 ```bash
 composer test
@@ -29,10 +56,6 @@ composer test
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-### Security
-
-If you discover any security related issues, please email john.zwarthoed@gmail.com instead of using the issue tracker.
 
 ## Credits
 
