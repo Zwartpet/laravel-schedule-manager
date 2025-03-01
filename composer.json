@@ -72,7 +72,7 @@
                 "Zwartpet\\ScheduleManager\\ScheduleManagerServiceProvider"
             ],
             "aliases": {
-                "LaravelScheduleManager": "Zwartpet\\LaravelScheduleManager\\LaravelScheduleManagerFacade"
+                "ScheduleManager": "Zwartpet\\ScheduleManager\\ScheduleManagerFacade"
             }
         }
     }
