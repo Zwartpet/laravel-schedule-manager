@@ -1,4 +1,4 @@
-# Very short description of the package
+# Laravel Schedule Manager
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/zwartpet/schedule-manager.svg?style=flat-square)](https://packagist.org/packages/zwartpet/schedule-manager)
 [![Total Downloads](https://img.shields.io/packagist/dt/zwartpet/schedule-manager.svg?style=flat-square)](https://packagist.org/packages/zwartpet/schedule-manager)
