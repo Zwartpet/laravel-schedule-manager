@@ -26,7 +26,8 @@ class SchedulePaused extends Command
                 $this->normalizeEvent($event),
                 $scheduleManager->getPause($event)->pauseUntil?->format('Y-m-d H:i:s') ?? 'Forever',
                 $scheduleManager->getPause($event)->description,
-            ]);
+            ])
+            ->toArray();
 
         table(['Paused schedule', 'Paused until', 'Description'], $schedules);
 
