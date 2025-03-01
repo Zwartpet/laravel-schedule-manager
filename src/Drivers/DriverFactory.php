@@ -4,7 +4,7 @@ namespace Zwartpet\ScheduleManager\Drivers;
 
 class DriverFactory
 {
-    public static function create($driver): DriverInterface
+    public static function create(string $driver): DriverInterface
     {
         $driver = ucfirst(strtolower($driver));
 

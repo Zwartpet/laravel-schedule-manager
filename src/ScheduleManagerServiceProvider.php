@@ -14,7 +14,7 @@ class ScheduleManagerServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      */
-    public function boot(Schedule $schedule, ScheduleManager $scheduleManager)
+    public function boot(Schedule $schedule, ScheduleManager $scheduleManager): void
     {
         /*
          * Optional methods to load your package assets

@@ -20,6 +20,7 @@
         "php": "^8.3|^8.4"
     },
     "require-dev": {
+        "larastan/larastan": "^3.1",
         "laravel/pint": "^1.21",
         "orchestra/pest-plugin-testbench": "^3.2",
         "orchestra/testbench": "^10.0",
@@ -54,7 +55,9 @@
         "test": [
             "@clear",
             "@php vendor/bin/pest"
-        ]
+        ],
+        "test:lint": "pint --test -v",
+        "test:types": "phpstan analyse --ansi --memory-limit 256M"
     },
     "config": {
         "sort-packages": true,
