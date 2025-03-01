@@ -9,6 +9,8 @@ use Illuminate\Console\Scheduling\Schedule;
 use Zwartpet\ScheduleManager\ScheduleManager;
 use Zwartpet\ScheduleManager\Traits\EventPrintable;
 
+use function Laravel\Prompts\select;
+
 class SchedulePause extends Command
 {
     use EventPrintable;
@@ -28,9 +30,9 @@ class SchedulePause extends Command
                 'command' => $this->normalizeEvent($event),
             ]);
 
-        $chosenOption = $this->choice(
-            'Which schedule do you want to pause?',
-            $schedules->pluck('command', 'key')->toArray()
+        $chosenOption = select(
+            label: 'Which schedule do you want to pause?',
+            options: $schedules->pluck('command', 'key')->toArray(),
         );
         $scheduleToPause = $schedules->firstWhere('command', $chosenOption);
 

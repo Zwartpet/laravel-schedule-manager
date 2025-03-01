@@ -8,6 +8,8 @@ use Illuminate\Console\Scheduling\Schedule;
 use Zwartpet\ScheduleManager\ScheduleManager;
 use Zwartpet\ScheduleManager\Traits\EventPrintable;
 
+use function Laravel\Prompts\table;
+
 class SchedulePaused extends Command
 {
     use EventPrintable;
@@ -26,7 +28,7 @@ class SchedulePaused extends Command
                 $scheduleManager->getPause($event)->description,
             ]);
 
-        $this->table(['Paused schedule', 'Paused until', 'Description'], $schedules);
+        table(['Paused schedule', 'Paused until', 'Description'], $schedules);
 
         return 0;
     }

@@ -21,5 +21,6 @@ class WorkbenchServiceProvider extends ServiceProvider
     {
         $schedule = $this->app->get(\Illuminate\Console\Scheduling\Schedule::class);
         $schedule->command('cache:clear')->daily();
+        $schedule->command('cache:clear')->monthly();
     }
 }

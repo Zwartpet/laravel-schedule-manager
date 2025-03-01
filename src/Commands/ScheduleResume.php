@@ -8,6 +8,8 @@ use Illuminate\Console\Scheduling\Schedule;
 use Zwartpet\ScheduleManager\ScheduleManager;
 use Zwartpet\ScheduleManager\Traits\EventPrintable;
 
+use function Laravel\Prompts\select;
+
 class ScheduleResume extends Command
 {
     use EventPrintable;
@@ -26,9 +28,15 @@ class ScheduleResume extends Command
                 'command' => $this->normalizeEvent($event),
             ]);
 
-        $chosenOption = $this->choice(
-            'Which paused schedule do you want to resume?',
-            $schedules->pluck('command', 'key')->toArray()
+        if ($schedules->isEmpty()) {
+            $this->info('No paused schedules found');
+
+            return 0;
+        }
+
+        $chosenOption = select(
+            label: 'Which paused schedule do you want to resume?',
+            options: $schedules->pluck('command', 'key')->toArray(),
         );
         $scheduleToPause = $schedules->firstWhere('command', $chosenOption);
 
