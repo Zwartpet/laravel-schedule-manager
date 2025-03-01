@@ -22,17 +22,20 @@ composer require zwartpet/schedule-manager
 Just use the `pause` and `resume` commands to pause and resume a schedule.    
 With the `--description` option you can add a description to the pause.  
 The `--pause-until` option will pause the schedule until the given date.
-```shell
+```bash
 php artisan schedule:pause --description="3rd party API is down" --pause-until="2027-01-01 00:00:00"
-
+```
+```bash
  Which schedule do you want to pause?:
   [0] 0 0 * * * php artisan cache:clear
  > 
 ```
 
 Using the `paused` command you can see all the paused schedules.
-```shell
-php artisan schedule:paused                                                                          
+```bash
+php artisan schedule:paused     
+```         
+```bash
 +-----------------------------------+---------------------+-----------------------+
 | Paused schedule                   | Paused until        | Description           |
 +-----------------------------------+---------------------+-----------------------+
@@ -49,8 +52,19 @@ You can change the cache store by adding `SCHEDULE_MANAGER_CACHE_STORE` to your 
 
 ## Testing
 
+Pest
 ```bash
 composer test
+```
+
+Pint
+```bash
+composer test:lint
+```
+
+PHPStan
+```bash
+composer test:types
 ```
 
 ## Contributing
