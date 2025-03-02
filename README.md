@@ -26,9 +26,10 @@ The `--pause-until` option will pause the schedule until the given date.
 php artisan schedule:pause --description="3rd party API is down" --pause-until="2027-01-01 00:00:00"
 ```
 ```bash
- Which schedule do you want to pause?:
-  [0] 0 0 * * * php artisan cache:clear
- > 
+ ┌ Which schedule do you want to pause? ────────────────────────┐
+ │ › ● 0 0 * * * php artisan cache:clear                        │
+ │   ○ 0 0 1 * * php artisan cache:clear                        │
+ └──────────────────────────────────────────────────────────────┘
 ```
 
 Using the `paused` command you can see all the paused schedules.
@@ -36,11 +37,11 @@ Using the `paused` command you can see all the paused schedules.
 php artisan schedule:paused     
 ```         
 ```bash
-+-----------------------------------+---------------------+-----------------------+
-| Paused schedule                   | Paused until        | Description           |
-+-----------------------------------+---------------------+-----------------------+
-| 0 0 * * * php artisan cache:clear | 2027-01-01 00:00:00 | 3rd party API is down |
-+-----------------------------------+---------------------+-----------------------+
+ ┌───────────────────────────────────┬─────────────────────┬───────────────────────┐
+ │ Paused schedule                   │ Paused until        │ Description           │
+ ├───────────────────────────────────┼─────────────────────┼───────────────────────┤
+ │ 0 0 * * * php artisan cache:clear │ 2027-01-01 00:00:00 │ 3rd party API is down │
+ └───────────────────────────────────┴─────────────────────┴───────────────────────┘
 ```
 
 ### Configuration
@@ -49,6 +50,9 @@ This library is plug and play and works out of the box. There are some configura
 
 By default the package uses the Laravel cache to store the paused schedules.
 You can change the cache store by adding `SCHEDULE_MANAGER_CACHE_STORE` to your `.env` which defaults to the Laravel's own `CACHE_STORE`
+
+If you want to persist the pauses even further, for instance because deploys often clear the cache, you can use the database driver.  
+Overwrite the `SCHEDULE_MANAGER_DRIVER` in your `.env` to `database` and run the migrations.
 
 ## Testing
 

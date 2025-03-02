@@ -16,7 +16,7 @@ use Zwartpet\ScheduleManager\Tests\TestCase;
 
 uses(
     TestCase::class,
-    //    RefreshDatabase::class,
+    RefreshDatabase::class,
 )->in('Feature');
 
 /*

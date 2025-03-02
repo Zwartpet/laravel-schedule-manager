@@ -21,7 +21,9 @@ class ScheduleManagerServiceProvider extends ServiceProvider
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'schedule-manager');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'schedule-manager');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        if (config('schedule-manager.driver') === 'database') {
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        }
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
@@ -50,12 +52,12 @@ class ScheduleManagerServiceProvider extends ServiceProvider
                 SchedulePaused::class,
                 ScheduleResume::class,
             ]);
-        }
 
-        foreach ($schedule->events() as $event) {
-            $event->when(function () use ($event, $scheduleManager) {
-                return $scheduleManager->shouldRunEvent($event);
-            });
+            foreach ($schedule->events() as $event) {
+                $event->when(function () use ($event, $scheduleManager) {
+                    return $scheduleManager->shouldRunEvent($event);
+                });
+            }
         }
     }
 
