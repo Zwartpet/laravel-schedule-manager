@@ -18,7 +18,7 @@ composer require zwartpet/schedule-manager
 
 ### Command line
 
-Just use the `pause` and `resume` commands to pause and resume a schedule.    
+Just use the `schedule:pause` and `schedule:resume` commands to pause and resume a schedule.    
 With the `--description` option you can add a description to the pause.  
 The `--pause-until` option will pause the schedule until the given date.
 ```bash
@@ -31,7 +31,7 @@ php artisan schedule:pause --description="3rd party API is down" --pause-until="
  └──────────────────────────────────────────────────────────────┘
 ```
 
-Using the `paused` command you can see all the paused schedules.
+Using the `schedule:paused` command you can see all the paused schedules.
 ```bash
 php artisan schedule:paused     
 ```         
