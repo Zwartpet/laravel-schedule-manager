@@ -5,6 +5,7 @@ namespace Zwartpet\ScheduleManager;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Zwartpet\ScheduleManager\Commands\ScheduleOptimize;
 use Zwartpet\ScheduleManager\Commands\SchedulePause;
 use Zwartpet\ScheduleManager\Commands\SchedulePaused;
 use Zwartpet\ScheduleManager\Commands\ScheduleResume;
@@ -27,6 +28,10 @@ class ScheduleManagerServiceProvider extends ServiceProvider
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
+            $this->optimizes(
+                optimize: 'schedule:optimize',
+            );
+
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('schedule-manager.php'),
             ], 'config');
@@ -48,6 +53,7 @@ class ScheduleManagerServiceProvider extends ServiceProvider
 
             // Registering package commands.
             $this->commands([
+                ScheduleOptimize::class,
                 SchedulePause::class,
                 SchedulePaused::class,
                 ScheduleResume::class,

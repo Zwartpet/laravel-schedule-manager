@@ -1,7 +1,6 @@
 # Laravel Schedule Manager
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/zwartpet/schedule-manager.svg?style=flat-square)](https://packagist.org/packages/zwartpet/schedule-manager)
-[![Total Downloads](https://img.shields.io/packagist/dt/zwartpet/schedule-manager.svg?style=flat-square)](https://packagist.org/packages/zwartpet/schedule-manager)
 [![Test](https://github.com/Zwartpet/laravel-schedule-manager/actions/workflows/main.yml/badge.svg)](https://github.com/Zwartpet/laravel-schedule-manager/actions/workflows/main.yml)
 
 Adds pause and resume functionality to the Laravel schedule via command line and an admin interface (wip).  
@@ -43,6 +42,8 @@ php artisan schedule:paused
  │ 0 0 * * * php artisan cache:clear │ 2027-01-01 00:00:00 │ 3rd party API is down │
  └───────────────────────────────────┴─────────────────────┴───────────────────────┘
 ```
+
+Additionally there is a `schedule:optimize` command that will cleanup the paused schedules that have expired when using the database driver which is also running on `php artisan optimize`.
 
 ### Configuration
 
