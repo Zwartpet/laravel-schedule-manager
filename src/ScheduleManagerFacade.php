@@ -5,7 +5,7 @@ namespace Zwartpet\ScheduleManager;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see ScheduleManager
+ * @see ScheduleManagerComponent
  */
 class ScheduleManagerFacade extends Facade
 {

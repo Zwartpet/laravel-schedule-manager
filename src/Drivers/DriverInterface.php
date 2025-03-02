@@ -13,5 +13,5 @@ interface DriverInterface
 
     public function resumeEvent(Event $event): void;
 
-    public function getPause(Event $event): Pause;
+    public function getPause(Event $event): ?Pause;
 }

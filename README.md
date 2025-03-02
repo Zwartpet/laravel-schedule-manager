@@ -55,6 +55,15 @@ You can change the cache store by adding `SCHEDULE_MANAGER_CACHE_STORE` to your 
 If you want to persist the pauses even further, for instance because deploys often clear the cache, you can use the database driver.  
 Overwrite the `SCHEDULE_MANAGER_DRIVER` in your `.env` to `database` and run the migrations.
 
+### UI
+
+The UI uses [Laravel Livewire](https://livewire.laravel.com/) and is disabled by default, add `SCHEDULE_MANAGER_UI_ENABLED=true` to your `.env` file and install livewire.
+```bash
+composer require livewire/livewire
+```
+
+The UI is available on the `/schedule-manager` route, configurable with `SCHEDULE_MANAGER_UI_ROUTE` in your `.env` file.
+
 ## Testing
 
 Pest

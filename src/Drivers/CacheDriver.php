@@ -29,8 +29,12 @@ class CacheDriver implements DriverInterface
         $this->getCache()->forget($this->getCacheKey($event));
     }
 
-    public function getPause(Event $event): Pause
+    public function getPause(Event $event): ?Pause
     {
+        if (! $this->getCache()->has($this->getCacheKey($event))) {
+            return null;
+        }
+
         return Pause::fromArray(json_decode($this->getCache()->get($this->getCacheKey($event)), true));
     }
 

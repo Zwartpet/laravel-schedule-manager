@@ -40,8 +40,12 @@ class DatabaseDriver implements DriverInterface
         $this->getPausedSchedule($event)?->delete();
     }
 
-    public function getPause(Event $event): Pause
+    public function getPause(Event $event): ?Pause
     {
+        if ($this->getPausedSchedule($event) === null) {
+            return null;
+        }
+
         return Pause::fromArray(json_decode($this->getPausedSchedule($event)->pause, true));
     }
 

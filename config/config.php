@@ -12,4 +12,9 @@ return [
             'table' => env('SCHEDULE_MANAGER_DATABASE_TABLE', 'paused_schedules'),
         ],
     ],
+
+    'ui' => [
+        'enabled' => env('SCHEDULE_MANAGER_UI_ENABLED', false),
+        'uri' => env('SCHEDULE_MANAGER_UI_URI', '/schedule-manager'),
+    ],
 ];

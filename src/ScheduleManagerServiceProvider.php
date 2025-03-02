@@ -5,10 +5,12 @@ namespace Zwartpet\ScheduleManager;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 use Zwartpet\ScheduleManager\Commands\ScheduleOptimize;
 use Zwartpet\ScheduleManager\Commands\SchedulePause;
 use Zwartpet\ScheduleManager\Commands\SchedulePaused;
 use Zwartpet\ScheduleManager\Commands\ScheduleResume;
+use Zwartpet\ScheduleManager\Livewire\ScheduleManagerComponent;
 
 class ScheduleManagerServiceProvider extends ServiceProvider
 {
@@ -21,11 +23,17 @@ class ScheduleManagerServiceProvider extends ServiceProvider
          * Optional methods to load your package assets
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'schedule-manager');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'schedule-manager');
+
+        if (config('schedule-manager.ui.enabled')) {
+            $this->loadViewsFrom(__DIR__.'/../resources/views', 'schedule-manager');
+            $this->loadRoutesFrom(__DIR__.'/routes.php');
+
+            Livewire::component('schedule-manager-component', ScheduleManagerComponent::class);
+        }
+
         if (config('schedule-manager.driver') === 'database') {
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         }
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
             $this->optimizes(
