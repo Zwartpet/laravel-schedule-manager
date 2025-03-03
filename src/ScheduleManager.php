@@ -25,7 +25,7 @@ class ScheduleManager
         $this->getDriver()->resumeEvent($event);
     }
 
-    public function getPause(Event $event): Pause
+    public function getPause(Event $event): ?Pause
     {
         return $this->getDriver()->getPause($event);
     }
