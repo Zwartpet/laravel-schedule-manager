@@ -49,9 +49,13 @@ Additionally there is a `schedule:optimize` command that will cleanup the paused
 
 This library is plug and play and works out of the box. There are some configuration options available.
 
+For all the configuration options see the [config file](config/config.php).
+
+**Cache driver**  
 By default the package uses the Laravel cache to store the paused schedules.
 You can change the cache store by adding `SCHEDULE_MANAGER_CACHE_STORE` to your `.env` which defaults to the Laravel's own `CACHE_STORE`
 
+**Database driver**  
 If you want to persist the pauses even further, for instance because deploys often clear the cache, you can use the database driver.  
 Overwrite the `SCHEDULE_MANAGER_DRIVER` in your `.env` to `database` and run the migrations.
 
@@ -63,6 +67,14 @@ composer require livewire/livewire
 ```
 
 The UI is available on the `/schedule-manager` route, configurable with `SCHEDULE_MANAGER_UI_ROUTE` in your `.env` file.
+
+It is protected with a [Laravel Gate](https://laravel.com/docs/12.x/authorization#gates) named `schedule-manager` which you can customize with `SCHEDULE_MANAGER_UI_GATE` in your `.env` file.
+Create the gate by adding the following to your `AppServiceProvider`:
+```php
+Gate::define('schedule-manager', function (User $user) {
+    return $user->isAdmin; // or any other logic
+});
+```
 
 ## Testing
 

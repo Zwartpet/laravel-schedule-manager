@@ -3,6 +3,7 @@
 namespace Zwartpet\ScheduleManager\Livewire;
 
 use Carbon\Carbon;
+use Gate;
 use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule;
 use Livewire\Attributes\Layout;
@@ -21,6 +22,19 @@ class ScheduleManagerComponent extends Component
     public $description = '';
 
     public $pauseUntil = '';
+
+    public function __construct()
+    {
+        if (config('schedule-manager.ui.gate')) {
+            if (! Gate::has(config('schedule-manager.ui.gate'))) {
+                abort(404, 'Missing gate: schedule-manager');
+            }
+
+            if (! Gate::allows(config('schedule-manager.ui.gate'))) {
+                abort(403);
+            }
+        }
+    }
 
     public function startPausing(string $mutexName, Schedule $schedule)
     {
