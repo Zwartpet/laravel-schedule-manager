@@ -16,5 +16,7 @@ return [
     'ui' => [
         'enabled' => env('SCHEDULE_MANAGER_UI_ENABLED', false),
         'uri' => env('SCHEDULE_MANAGER_UI_URI', '/schedule-manager'),
+        'middleware' => env('SCHEDULE_MANAGER_UI_MIDDLEWARE', 'web'),
+        'gate' => env('SCHEDULE_MANAGER_UI_GATE', 'schedule-manager'),
     ],
 ];
