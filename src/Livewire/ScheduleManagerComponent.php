@@ -2,9 +2,9 @@
 
 namespace Zwartpet\ScheduleManager\Livewire;
 
+use Cache;
 use Carbon\Carbon;
 use Gate;
-use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -36,23 +36,17 @@ class ScheduleManagerComponent extends Component
         }
     }
 
-    public function startPausing(string $mutexName, Schedule $schedule)
+    public function startPausing(string $mutexName)
     {
         $this->pausing = $mutexName;
 
-        $event = collect($schedule->events())
-            ->first(fn (Event $event) => $event->mutexName() === $this->pausing);
-
-        $this->pausingCommand = $this->normalizeEvent($event);
+        $this->pausingCommand = data_get($this->getEvent($mutexName), 'command');
     }
 
-    public function pause(Schedule $schedule, ScheduleManager $scheduleManager)
+    public function pause(ScheduleManager $scheduleManager)
     {
-        $event = collect($schedule->events())
-            ->first(fn (Event $event) => $event->mutexName() === $this->pausing);
-
         $scheduleManager->pauseEvent(
-            $event,
+            $this->pausing,
             $this->description,
             $this->pauseUntil ? Carbon::parse($this->pauseUntil) : null,
         );
@@ -63,26 +57,38 @@ class ScheduleManagerComponent extends Component
 
     public function resume(string $mutexName, Schedule $schedule, ScheduleManager $scheduleManager)
     {
-        $event = collect($schedule->events())
-            ->first(fn (Event $event) => $event->mutexName() === $mutexName);
-
-        $scheduleManager->resumeEvent($event);
+        $scheduleManager->resumeEvent($mutexName);
     }
 
     #[Layout('schedule-manager::components.layouts.app')]
     public function render(Schedule $schedule, ScheduleManager $scheduleManager)
     {
-        $schedules = collect($schedule->events())
-            ->map(fn (Event $event) => [
-                'command' => $this->normalizeEvent($event),
-                'is_paused' => ! $scheduleManager->shouldRunEvent($event),
-                'pause_until' => $scheduleManager->getPause($event)?->pauseUntil,
-                'mutex_name' => $event->mutexName(),
+        $schedules = collect($this->getEvents())
+            ->map(fn ($event) => [
+                'command' => $event['command'],
+                'is_paused' => ! $scheduleManager->shouldRunEvent($event['mutex_name']),
+                'pause_until' => $scheduleManager->getPause($event['mutex_name'])?->pauseUntil,
+                'mutex_name' => $event['mutex_name'],
             ])
             ->toArray();
 
         return view('schedule-manager::livewire.schedule-manager', [
             'schedules' => $schedules,
         ]);
+    }
+
+    private function getEvents(): array
+    {
+        $events = Cache::get('schedule-manager::events', []);
+        if (empty($events)) {
+            \Artisan::call('schedule:optimize');
+        }
+
+        return empty($events) ? Cache::get('schedule-manager::events', []) : $events;
+    }
+
+    private function getEvent(string $mutexName): array
+    {
+        return collect($this->getEvents())->first(fn ($event) => $event['mutex_name'] === $mutexName);
     }
 }

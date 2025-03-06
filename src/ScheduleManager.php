@@ -10,22 +10,22 @@ use Zwartpet\ScheduleManager\DTO\Pause;
 
 class ScheduleManager
 {
-    public function shouldRunEvent(Event $event): bool
+    public function shouldRunEvent(Event|string $event): bool
     {
         return $this->getDriver()->shouldRunEvent($event);
     }
 
-    public function pauseEvent(Event $event, ?string $description = null, ?DateTimeInterface $pauseUntil = null): void
+    public function pauseEvent(Event|string $event, ?string $description = null, ?DateTimeInterface $pauseUntil = null): void
     {
         $this->getDriver()->pauseEvent($event, new Pause($description, $pauseUntil));
     }
 
-    public function resumeEvent(Event $event): void
+    public function resumeEvent(Event|string $event): void
     {
         $this->getDriver()->resumeEvent($event);
     }
 
-    public function getPause(Event $event): ?Pause
+    public function getPause(Event|string $event): ?Pause
     {
         return $this->getDriver()->getPause($event);
     }

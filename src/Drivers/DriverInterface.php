@@ -7,11 +7,11 @@ use Zwartpet\ScheduleManager\DTO\Pause;
 
 interface DriverInterface
 {
-    public function shouldRunEvent(Event $event): bool;
+    public function shouldRunEvent(Event|string $event): bool;
 
-    public function pauseEvent(Event $event, Pause $pause): void;
+    public function pauseEvent(Event|string $event, Pause $pause): void;
 
-    public function resumeEvent(Event $event): void;
+    public function resumeEvent(Event|string $event): void;
 
-    public function getPause(Event $event): ?Pause;
+    public function getPause(Event|string $event): ?Pause;
 }
