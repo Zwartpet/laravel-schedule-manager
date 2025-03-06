@@ -12,7 +12,7 @@ class ScheduleOptimize extends Command
 {
     use EventPrintable;
 
-    protected $signature = 'schedule:optimize';
+    protected $signature = 'schedule-manager:optimize';
 
     protected $description = 'Cleaning up old pauses';
 

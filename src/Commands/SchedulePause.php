@@ -15,7 +15,7 @@ class SchedulePause extends Command
 {
     use EventPrintable;
 
-    protected $signature = 'schedule:pause
+    protected $signature = 'schedule-manager:pause
         {--D|description= : Set a reason for the pause}
         {--U|pause-until= : Set a ttl for the pause}';
 

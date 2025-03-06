@@ -14,7 +14,7 @@ class ScheduleResume extends Command
 {
     use EventPrintable;
 
-    protected $signature = 'schedule:resume';
+    protected $signature = 'schedule-manager:resume';
 
     protected $description = 'Resume a paused scheduled command';
 

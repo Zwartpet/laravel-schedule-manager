@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    {{ Vite::useBuildDirectory('vendor/schedule-manager')->withEntryPoints(['resources/css/schedule-manager.css']) }}
 
     <title>{{ $title ?? 'Schedule manager' }}</title>
 </head>

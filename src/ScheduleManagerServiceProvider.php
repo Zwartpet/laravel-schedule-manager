@@ -49,24 +49,17 @@ class ScheduleManagerServiceProvider extends ServiceProvider
 
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('schedule-manager.php'),
-            ], 'config');
+            ], ['config', 'schedule-manager-config']);
 
-            // Publishing the views.
-            /*$this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/schedule-manager'),
-            ], 'views');*/
-
-            // Publishing assets.
-            /*$this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/schedule-manager'),
-            ], 'assets');*/
+            $this->publishes([
+                __DIR__.'/../public/vendor/schedule-manager/assets' => public_path('vendor/schedule-manager/assets'),
+                __DIR__.'/../public/vendor/schedule-manager/manifest.json' => public_path('vendor/schedule-manager/manifest.json'),
+            ], ['assets', 'schedule-manager-assets']);
 
             // Publishing the translation files.
             /*$this->publishes([
                 __DIR__.'/../resources/lang' => resource_path('lang/vendor/schedule-manager'),
             ], 'lang');*/
-
-            // Registering package commands.
 
             foreach ($schedule->events() as $event) {
                 $event->when(function () use ($event, $scheduleManager) {
@@ -81,10 +74,8 @@ class ScheduleManagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'schedule-manager');
 
-        // Register the main class to use with the facade
         $this->app->singleton('schedule-manager', function (Application $app) {
             return new ScheduleManager;
         });

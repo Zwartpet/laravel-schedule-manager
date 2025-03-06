@@ -5,7 +5,6 @@ namespace Zwartpet\ScheduleManager\Livewire;
 use Cache;
 use Carbon\Carbon;
 use Gate;
-use Illuminate\Console\Scheduling\Schedule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Zwartpet\ScheduleManager\ScheduleManager;
@@ -55,13 +54,13 @@ class ScheduleManagerComponent extends Component
         $this->pausingCommand = null;
     }
 
-    public function resume(string $mutexName, Schedule $schedule, ScheduleManager $scheduleManager)
+    public function resume(string $mutexName, ScheduleManager $scheduleManager)
     {
         $scheduleManager->resumeEvent($mutexName);
     }
 
     #[Layout('schedule-manager::components.layouts.app')]
-    public function render(Schedule $schedule, ScheduleManager $scheduleManager)
+    public function render(ScheduleManager $scheduleManager)
     {
         $schedules = collect($this->getEvents())
             ->map(fn ($event) => [
@@ -81,7 +80,7 @@ class ScheduleManagerComponent extends Component
     {
         $events = Cache::get('schedule-manager::events', []);
         if (empty($events)) {
-            \Artisan::call('schedule:optimize');
+            \Artisan::call('schedule-manager:optimize');
         }
 
         return empty($events) ? Cache::get('schedule-manager::events', []) : $events;
