@@ -18,11 +18,11 @@ composer require zwartpet/schedule-manager
 
 ### Command line
 
-Just use the `schedule:pause` and `schedule:resume` commands to pause and resume a schedule.    
+Just use the `schedule-manager:pause` and `schedule-manager:resume` commands to pause and resume a schedule.    
 With the `--description` option you can add a description to the pause.  
 The `--pause-until` option will pause the schedule until the given date.
 ```bash
-php artisan schedule:pause --description="3rd party API is down" --pause-until="2027-01-01 00:00:00"
+php artisan schedule-manager:pause --description="3rd party API is down" --pause-until="2027-01-01 00:00:00"
 ```
 ```bash
  ┌ Which schedule do you want to pause? ────────────────────────┐
@@ -31,9 +31,9 @@ php artisan schedule:pause --description="3rd party API is down" --pause-until="
  └──────────────────────────────────────────────────────────────┘
 ```
 
-Using the `schedule:paused` command you can see all the paused schedules.
+Using the `schedule-manager:paused` command you can see all the paused schedules.
 ```bash
-php artisan schedule:paused     
+php artisan schedule-manager:paused     
 ```         
 ```bash
  ┌───────────────────────────────────┬─────────────────────┬───────────────────────┐
@@ -43,7 +43,7 @@ php artisan schedule:paused
  └───────────────────────────────────┴─────────────────────┴───────────────────────┘
 ```
 
-Additionally there is a `schedule:optimize` command that will cleanup the paused schedules that have expired when using the database driver which is also running on `php artisan optimize`.
+Additionally there is a `schedule-manager:optimize` command that will cleanup the paused schedules that have expired when using the database driver which is also running on `php artisan optimize`.
 
 ### Configuration
 
@@ -60,6 +60,11 @@ If you want to persist the pauses even further, for instance because deploys oft
 Overwrite the `SCHEDULE_MANAGER_DRIVER` in your `.env` to `database` and run the migrations.
 
 ### UI
+
+Publish the assets
+```bash
+php artisan vendor:publish --tag=schedule-manager-assets
+```
 
 The UI uses [Laravel Livewire](https://livewire.laravel.com/) and is disabled by default, add `SCHEDULE_MANAGER_UI_ENABLED=true` to your `.env` file and install livewire.
 ```bash

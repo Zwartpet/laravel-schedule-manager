@@ -14,7 +14,7 @@ class SchedulePaused extends Command
 {
     use EventPrintable;
 
-    protected $signature = 'schedule:paused';
+    protected $signature = 'schedule-manager:paused';
 
     protected $description = 'Show all paused schedules';
 
