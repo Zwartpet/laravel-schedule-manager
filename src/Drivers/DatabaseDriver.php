@@ -14,7 +14,7 @@ class DatabaseDriver implements DriverInterface
      */
     private ?Collection $pausedSchedules = null;
 
-    public function shouldRunEvent(Event $event): bool
+    public function shouldRunEvent(Event|string $event): bool
     {
         $pausedSchedule = $this->getPausedSchedule($event);
         if ($pausedSchedule === null) {
@@ -24,10 +24,10 @@ class DatabaseDriver implements DriverInterface
         return $pausedSchedule->pause_until !== null && $pausedSchedule->pause_until->isPast();
     }
 
-    public function pauseEvent(Event $event, Pause $pause): void
+    public function pauseEvent(Event|string $event, Pause $pause): void
     {
         PausedSchedule::updateOrCreate(
-            ['mutex_name' => $event->mutexName()],
+            ['mutex_name' => $this->getName($event)],
             [
                 'pause' => json_encode($pause),
                 'pause_until' => $pause->pauseUntil,
@@ -35,12 +35,12 @@ class DatabaseDriver implements DriverInterface
         );
     }
 
-    public function resumeEvent(Event $event): void
+    public function resumeEvent(Event|string $event): void
     {
         $this->getPausedSchedule($event)?->delete();
     }
 
-    public function getPause(Event $event): ?Pause
+    public function getPause(Event|string $event): ?Pause
     {
         if ($this->getPausedSchedule($event) === null) {
             return null;
@@ -49,7 +49,7 @@ class DatabaseDriver implements DriverInterface
         return Pause::fromArray(json_decode($this->getPausedSchedule($event)->pause, true));
     }
 
-    private function getPausedSchedule(Event $event): ?PausedSchedule
+    private function getPausedSchedule(Event|string $event): ?PausedSchedule
     {
         $this->pausedSchedules ??= PausedSchedule::whereNull('pause_until')
             ->orWhereFuture('pause_until')
@@ -60,6 +60,11 @@ class DatabaseDriver implements DriverInterface
         }
 
         /** @var PausedSchedule|null */
-        return $this->pausedSchedules->firstWhere('mutex_name', $event->mutexName());
+        return $this->pausedSchedules->firstWhere('mutex_name', $this->getName($event));
+    }
+
+    private function getName(Event|string $event): string
+    {
+        return is_string($event) ? $event : $event->mutexName();
     }
 }

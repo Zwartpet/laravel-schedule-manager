@@ -35,6 +35,13 @@ class ScheduleManagerServiceProvider extends ServiceProvider
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         }
 
+        $this->commands([
+            ScheduleOptimize::class,
+            SchedulePause::class,
+            SchedulePaused::class,
+            ScheduleResume::class,
+        ]);
+
         if ($this->app->runningInConsole()) {
             $this->optimizes(
                 optimize: 'schedule:optimize',
@@ -60,12 +67,6 @@ class ScheduleManagerServiceProvider extends ServiceProvider
             ], 'lang');*/
 
             // Registering package commands.
-            $this->commands([
-                ScheduleOptimize::class,
-                SchedulePause::class,
-                SchedulePaused::class,
-                ScheduleResume::class,
-            ]);
 
             foreach ($schedule->events() as $event) {
                 $event->when(function () use ($event, $scheduleManager) {
