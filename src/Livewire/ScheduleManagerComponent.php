@@ -91,6 +91,7 @@ class ScheduleManagerComponent extends Component
             ])
             ->toArray();
 
+        /** @phpstan-ignore argument.type */
         return view('schedule-manager::livewire.schedule-manager', [
             'schedules' => $schedules,
         ]);

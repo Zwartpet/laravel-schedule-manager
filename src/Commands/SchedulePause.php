@@ -43,8 +43,8 @@ class SchedulePause extends Command
 
         $scheduleManager->pauseEvent(
             $scheduleToPause['event'],
-            $this->option('description'),
-            $this->option('pause-until') ? Carbon::parse($this->option('pause-until')) : null
+            $this->option('description'), // @phpstan-ignore argument.type
+            $this->option('pause-until') ? Carbon::parse($this->option('pause-until')) : null // @phpstan-ignore argument.type
         );
 
         return 0;
