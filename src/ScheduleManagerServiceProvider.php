@@ -19,10 +19,7 @@ class ScheduleManagerServiceProvider extends ServiceProvider
      */
     public function boot(Schedule $schedule, ScheduleManager $scheduleManager): void
     {
-        /*
-         * Optional methods to load your package assets
-         */
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'schedule-manager');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'schedule-manager');
 
         if (config('schedule-manager.ui.enabled')) {
             $this->loadViewsFrom(__DIR__.'/../resources/views', 'schedule-manager');
@@ -49,17 +46,16 @@ class ScheduleManagerServiceProvider extends ServiceProvider
 
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('schedule-manager.php'),
-            ], ['config', 'schedule-manager-config']);
+            ], ['config', 'schedule-manager', 'schedule-manager-config']);
 
             $this->publishes([
                 __DIR__.'/../public/vendor/schedule-manager/assets' => public_path('vendor/schedule-manager/assets'),
                 __DIR__.'/../public/vendor/schedule-manager/manifest.json' => public_path('vendor/schedule-manager/manifest.json'),
-            ], ['assets', 'schedule-manager-assets']);
+            ], ['assets', 'schedule-manager', 'schedule-manager-assets']);
 
-            // Publishing the translation files.
-            /*$this->publishes([
+            $this->publishes([
                 __DIR__.'/../resources/lang' => resource_path('lang/vendor/schedule-manager'),
-            ], 'lang');*/
+            ], ['lang', 'schedule-manager', 'schedule-manager-lang']);
 
             foreach ($schedule->events() as $event) {
                 $event->when(function () use ($event, $scheduleManager) {
