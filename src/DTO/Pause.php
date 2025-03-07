@@ -12,6 +12,9 @@ class Pause implements \JsonSerializable
         public ?DateTimeInterface $pauseUntil = null,
     ) {}
 
+    /**
+     * @param  array{description: string, pauseUntil: string}  $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(

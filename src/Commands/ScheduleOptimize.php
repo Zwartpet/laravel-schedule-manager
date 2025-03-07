@@ -16,7 +16,7 @@ class ScheduleOptimize extends Command
 
     protected $description = 'Cleaning up old pauses';
 
-    public function handle(Schedule $schedule)
+    public function handle(Schedule $schedule): int
     {
         if (config('schedule-manager.driver') === 'database') {
             $this->info('Cleaning up old pauses');

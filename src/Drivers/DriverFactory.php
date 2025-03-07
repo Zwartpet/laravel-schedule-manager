@@ -14,6 +14,7 @@ class DriverFactory
             throw new \InvalidArgumentException("Driver [{$driver}] is not supported.");
         }
 
+        /** @var DriverInterface */
         return new $class;
     }
 }
