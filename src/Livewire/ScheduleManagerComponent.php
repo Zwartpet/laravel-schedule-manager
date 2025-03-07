@@ -5,6 +5,9 @@ namespace Zwartpet\ScheduleManager\Livewire;
 use Cache;
 use Carbon\Carbon;
 use Gate;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Zwartpet\ScheduleManager\ScheduleManager;
@@ -18,9 +21,9 @@ class ScheduleManagerComponent extends Component
 
     public ?string $pausingCommand = null;
 
-    public $description = '';
+    public string $description = '';
 
-    public $pauseUntil = '';
+    public string $pauseUntil = '';
 
     public function __construct()
     {
@@ -35,15 +38,19 @@ class ScheduleManagerComponent extends Component
         }
     }
 
-    public function startPausing(string $mutexName)
+    public function startPausing(string $mutexName): void
     {
         $this->pausing = $mutexName;
 
         $this->pausingCommand = data_get($this->getEvent($mutexName), 'command');
     }
 
-    public function pause(ScheduleManager $scheduleManager)
+    public function pause(ScheduleManager $scheduleManager): void
     {
+        if (! $this->pausing) {
+            return;
+        }
+
         $scheduleManager->pauseEvent(
             $this->pausing,
             $this->description,
@@ -54,28 +61,14 @@ class ScheduleManagerComponent extends Component
         $this->pausingCommand = null;
     }
 
-    public function resume(string $mutexName, ScheduleManager $scheduleManager)
+    public function resume(string $mutexName, ScheduleManager $scheduleManager): void
     {
         $scheduleManager->resumeEvent($mutexName);
     }
 
-    #[Layout('schedule-manager::components.layouts.app')]
-    public function render(ScheduleManager $scheduleManager)
-    {
-        $schedules = collect($this->getEvents())
-            ->map(fn ($event) => [
-                'command' => $event['command'],
-                'is_paused' => ! $scheduleManager->shouldRunEvent($event['mutex_name']),
-                'pause_until' => $scheduleManager->getPause($event['mutex_name'])?->pauseUntil,
-                'mutex_name' => $event['mutex_name'],
-            ])
-            ->toArray();
-
-        return view('schedule-manager::livewire.schedule-manager', [
-            'schedules' => $schedules,
-        ]);
-    }
-
+    /**
+     * @return array<array{'command': string, "mutex_name": string}>
+     */
     private function getEvents(): array
     {
         $events = Cache::get('schedule-manager::events', []);
@@ -86,7 +79,28 @@ class ScheduleManagerComponent extends Component
         return empty($events) ? Cache::get('schedule-manager::events', []) : $events;
     }
 
-    private function getEvent(string $mutexName): array
+    #[Layout('schedule-manager::components.layouts.app')]
+    public function render(ScheduleManager $scheduleManager): View|Application|Factory
+    {
+        $schedules = collect($this->getEvents())
+            ->map(fn ($event) => [
+                'command' => $event['command'],
+                'is_paused' => ! $scheduleManager->shouldRunEvent($event['mutex_name']),
+                'pause_until' => $scheduleManager->getPause($event['mutex_name'])?->pauseUntil,
+                'mutex_name' => $event['mutex_name'],
+            ])
+            ->toArray();
+
+        /** @phpstan-ignore argument.type */
+        return view('schedule-manager::livewire.schedule-manager', [
+            'schedules' => $schedules,
+        ]);
+    }
+
+    /**
+     * @return array{'command': string, "mutex_name": string}|null
+     */
+    private function getEvent(string $mutexName): ?array
     {
         return collect($this->getEvents())->first(fn ($event) => $event['mutex_name'] === $mutexName);
     }

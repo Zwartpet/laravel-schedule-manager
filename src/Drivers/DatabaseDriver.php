@@ -10,7 +10,7 @@ use Zwartpet\ScheduleManager\Models\PausedSchedule;
 class DatabaseDriver implements DriverInterface
 {
     /**
-     * @var Collection<PausedSchedule>|null
+     * @var Collection<int, PausedSchedule>|null
      */
     private ?Collection $pausedSchedules = null;
 

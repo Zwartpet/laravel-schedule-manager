@@ -18,7 +18,7 @@ class ScheduleResume extends Command
 
     protected $description = 'Resume a paused scheduled command';
 
-    public function handle(Schedule $schedule, ScheduleManager $scheduleManager)
+    public function handle(Schedule $schedule, ScheduleManager $scheduleManager): int
     {
         $schedules = collect($schedule->events())
             ->filter(fn (Event $event) => ! $scheduleManager->shouldRunEvent($event))
@@ -38,9 +38,14 @@ class ScheduleResume extends Command
             label: 'Which paused schedule do you want to resume?',
             options: $schedules->pluck('command', 'key')->toArray(),
         );
-        $scheduleToPause = $schedules->firstWhere('command', $chosenOption);
+        $scheduleToResume = $schedules->firstWhere('command', $chosenOption);
+        if (! $scheduleToResume) {
+            $this->error('Schedule not found');
 
-        $scheduleManager->resumeEvent($scheduleToPause['event']);
+            return 0;
+        }
+
+        $scheduleManager->resumeEvent($scheduleToResume['event']);
 
         return 0;
     }

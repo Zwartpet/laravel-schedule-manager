@@ -21,7 +21,7 @@ class SchedulePause extends Command
 
     protected $description = 'Pause a scheduled command from running';
 
-    public function handle(Schedule $schedule, ScheduleManager $scheduleManager)
+    public function handle(Schedule $schedule, ScheduleManager $scheduleManager): int
     {
         $schedules = collect($schedule->events())
             ->map(fn (Event $event, $index) => [
@@ -35,11 +35,16 @@ class SchedulePause extends Command
             options: $schedules->pluck('command', 'key')->toArray(),
         );
         $scheduleToPause = $schedules->firstWhere('command', $chosenOption);
+        if (! $scheduleToPause) {
+            $this->error('Schedule not found');
+
+            return 0;
+        }
 
         $scheduleManager->pauseEvent(
             $scheduleToPause['event'],
-            $this->option('description'),
-            $this->option('pause-until') ? Carbon::parse($this->option('pause-until')) : null
+            $this->option('description'), // @phpstan-ignore argument.type
+            $this->option('pause-until') ? Carbon::parse($this->option('pause-until')) : null // @phpstan-ignore argument.type
         );
 
         return 0;
