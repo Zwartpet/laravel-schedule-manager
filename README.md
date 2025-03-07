@@ -73,8 +73,8 @@ composer require livewire/livewire
 
 The UI is available on the `/schedule-manager` route, configurable with `SCHEDULE_MANAGER_UI_ROUTE` in your `.env` file.
 
-It is protected with a [Laravel Gate](https://laravel.com/docs/12.x/authorization#gates) named `schedule-manager` which you can customize with `SCHEDULE_MANAGER_UI_GATE` in your `.env` file.
-Create the gate by adding the following to your `AppServiceProvider`:
+The route is protected with a [Laravel Gate](https://laravel.com/docs/12.x/authorization#gates) named `schedule-manager` which you can customize with `SCHEDULE_MANAGER_UI_GATE` in your `.env` file.
+Create the gate by adding the following to your `AuthServiceProvider`, not adding this will result in a 404 error when visiting the route.
 ```php
 Gate::define('schedule-manager', function (User $user) {
     return $user->isAdmin; // or any other logic
