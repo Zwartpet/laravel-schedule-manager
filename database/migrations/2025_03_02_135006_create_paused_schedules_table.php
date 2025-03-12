@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('paused_schedules', function (Blueprint $table) {
             $table->id();
             $table->string('mutex_name');
-            $table->dateTime('paused_until')->nullable();
+            $table->dateTime('pause_until')->nullable();
             $table->json('pause');
             $table->timestamps();
         });
